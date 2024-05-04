@@ -17,11 +17,15 @@
     name: expense
 
 - name: run app pre-requisites
+  tags:
+  - deployment
   ansible.builtin.import_role:
     name: common
     tasks_from: app-pre-req
 
 - name: Download the npm dependencies
+  tags:
+  - deployment
   ansible.builtin.command: npm install
   args:
     chdir: /app
@@ -36,7 +40,7 @@
     name:
     - PyMySQL # to connect MySQL DB from Ansible
     - cryptography
-    executable: pip3.9 # pip3.11 if python version is 3.11 depends on the ansible version
+    executable: pip3.9  
 
 - name: Import data to mysql database
   community.mysql.mysql_db:
@@ -46,9 +50,12 @@
     target: /app/schema/backend.sql
     state: import
     name: all
-- name: deamon reload
-  ansible.builtin.systemd:
-    daemon_reload: yes
+  notify:
+  - deamon reload 
+
+# - name: deamon reload
+#   ansible.builtin.systemd:
+#     daemon_reload: yes
 - name: start and enable backend backend service
   ansible.builtin.systemd:
     name: backend
