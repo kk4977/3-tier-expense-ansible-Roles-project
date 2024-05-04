@@ -51,7 +51,7 @@
     state: import
     name: all
   notify:
-  - name: deamon reload 
+    - deamon reload 
 
 # - name: deamon reload
 #   ansible.builtin.systemd:
