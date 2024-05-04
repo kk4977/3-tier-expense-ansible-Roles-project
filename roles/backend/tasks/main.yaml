@@ -59,6 +59,8 @@
 #   ansible.builtin.systemd:
 #     daemon_reload: yes
 - name: start and enable backend backend service
+  tags: 
+  - deployment
   ansible.builtin.systemd:
     name: backend
     state: started
